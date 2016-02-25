@@ -8,7 +8,6 @@
             [meta-merge.core :refer [meta-merge]]
             [ring.component.jetty :refer [jetty-server]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [ring.middleware.session :refer [wrap-session]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [dertwothumber.endpoint.example :refer [example-endpoint]])
   (:use [ring.middleware.session.cookie]))
@@ -17,12 +16,12 @@
   {:app {:middleware [[wrap-not-found :not-found]
                       [wrap-webjars]
                       [wrap-defaults :defaults]
-                      [wrap-route-aliases :aliases]
-                      [wrap-session :store-options]]
+                      [wrap-route-aliases :aliases]]
          :not-found  (io/resource "dertwothumber/errors/404.html")
-         :defaults   (meta-merge site-defaults {:static {:resources "dertwothumber/public"}})
-         :aliases    {"/" "/index.html"}
-         :store-options {:store (cookie-store {:key "a 16-byte secret"})}}})
+         :defaults   (meta-merge site-defaults {:static  {:resources "dertwothumber/public"}
+                                                :session {:store (cookie-store {:key "a 16-byte secret"})
+                                                          :cookie-attrs {:max-age 3600}}})
+         :aliases    {"/" "/index.html"}}})
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
