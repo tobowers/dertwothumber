@@ -22,7 +22,8 @@
                  [hiccup "1.0.5"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.6"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [tentacles "0.5.1"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]]
