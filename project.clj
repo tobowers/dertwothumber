@@ -23,7 +23,9 @@
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.6"
                   :exclusions [org.clojure/tools.reader]]
-                 [tentacles "0.5.1"]]
+                 [tentacles "0.5.1"]
+                 [cljs-http "0.1.39"]
+                 [clj-http "2.1.0"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]]
