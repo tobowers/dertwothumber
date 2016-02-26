@@ -9,7 +9,8 @@
             [ring.component.jetty :refer [jetty-server]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
-            [dertwothumber.endpoint.example :refer [example-endpoint]])
+            [dertwothumber.endpoint.example :refer [example-endpoint]]
+            [dertwothumber.endpoint.oauth :refer [oauth-endpoint]])
   (:use [ring.middleware.session.cookie]))
 
 (def base-config
@@ -28,8 +29,11 @@
     (-> (component/system-map
          :app  (handler-component (:app config))
          :http (jetty-server (:http config))
-         :example (endpoint-component example-endpoint))
+         :example (endpoint-component example-endpoint)
+         :oauth (endpoint-component oauth-endpoint)
+         :github-config (:github config))
         (component/system-using
          {:http [:app]
-          :app  [:example]
-          :example []}))))
+          :app  [:example :oauth]
+          :example []
+          :oauth [:github-config]}))))
