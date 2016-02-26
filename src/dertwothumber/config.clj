@@ -7,4 +7,4 @@
 
 (def environ
   {:http {:port (some-> env :port Integer.)}
-   :github {:client-id (env :github-client-id) :secret-key (env :github-secret-key) :app-host (env :app-host)}})
+   :github {:client-id (env :github-client-id) :client-secret (env :github-client-secret) :app-host (env :app-host)}})
