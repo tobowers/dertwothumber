@@ -24,7 +24,7 @@
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
-  (session/reset! (js->clj (.-__initialState js/window)))
+  (session/reset! (js->clj (.-__initialState js/window) :keywordize-keys true))
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (mount-root))

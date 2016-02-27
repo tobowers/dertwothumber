@@ -13,7 +13,7 @@
    :authorize-uri  "https://github.com/login/oauth/authorize"
    :redirect-uri (str (:app-host config) "/oauth/github/authorize")
    :access-token-uri "https://github.com/login/oauth/access_token"
-   :scope "activity profile"})
+   :scope "repo"})
 
 (defn- authorize-uri [client-params]
   (str
@@ -26,22 +26,28 @@
     "&scope="
     (url-encode (:scope client-params))))
 
+(defn- fetch-github-access-token
+  [oauth2-params code]
+  (-> (http/post (:access-token-uri oauth2-params)
+                 {:form-params {:code         code
+                                :client_id    (:client-id oauth2-params)
+                                :client_secret (:client-secret oauth2-params)
+                                :redirect_uri (:redirect-uri oauth2-params)}
+                  :as :x-www-form-urlencoded})
+      :body))
+
 
 (defn oauth-endpoint [config]
     (context "/oauth" []
       (GET "/github" []
         (let [config (:github-config config)]
           (redirect (authorize-uri (oauth2-params config)))))
-      (GET "/github/authorize" {params :params}
-        (let [oauth2-params (oauth2-params (:github-config config))
-              form-params {:code         (:code params)
-                           :client_id    (:client-id oauth2-params)
-                           :client_secret (:client-secret oauth2-params)
-                           :redirect_uri (:redirect-uri oauth2-params)}]
-          (loading-page/loading-page :initial-state (-> (http/post (:access-token-uri oauth2-params)
-                                                                   {:form-params form-params
-                                                                    :as :x-www-form-urlencoded})
-                                                         :body))))
-      ; TODO: set session token and then redirect to login page
+      (GET "/github/authorize" {params :params session :session}
+        (let [oauth2-params   (oauth2-params (:github-config config))
+              github-response (fetch-github-access-token oauth2-params (:code params))
+              session         (assoc session :access-token (:access_token github-response))]
+           (-> (redirect "/ui")
+               (assoc :session session))
+         ))
       (GET "/github/success" {params :params}
         (str "success" params))))
