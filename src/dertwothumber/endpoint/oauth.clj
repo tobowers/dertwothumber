@@ -1,7 +1,7 @@
 (ns dertwothumber.endpoint.oauth
   (:require [compojure.core :refer :all]
             [clj-http.client :as http]
-            [dertwothumber.static-views.loading-page :as loading-page])
+            [dertwothumber.static-view.loading-page :as loading-page])
   (:use [ring.middleware.session]
         [ring.util.response]
         [ring.util.codec]))
@@ -42,5 +42,6 @@
                                                                    {:form-params form-params
                                                                     :as :x-www-form-urlencoded})
                                                          :body))))
+      ; TODO: set session token and then redirect to login page
       (GET "/github/success" {params :params}
         (str "success" params))))

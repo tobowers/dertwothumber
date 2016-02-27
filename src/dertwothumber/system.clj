@@ -11,7 +11,8 @@
             [ring.middleware.webjars :refer [wrap-webjars]]
             [buddy.auth.middleware :refer [wrap-authentication]]
             [dertwothumber.endpoint.example :refer [example-endpoint]]
-            [dertwothumber.endpoint.oauth :refer [oauth-endpoint]])
+            [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
+            [dertwothumber.endpoint.ui :refer [ui-endpoint]])
   (:use [ring.middleware.session.cookie]))
 
 (def base-config
@@ -22,10 +23,12 @@
                       [wrap-authentication :authentication]]
          :not-found  (io/resource "dertwothumber/errors/404.html")
          :defaults   (meta-merge site-defaults {:static  {:resources "dertwothumber/public"}
-                                                :session {:store (cookie-store {:key "a 16-byte secret"})
+                                                :session {:store (cookie-store {:key "a 16-byte sekret"})
                                                           :cookie-attrs {:max-age 3600}}})
-         :aliases    {"/" "/index.html"}}
+         :aliases    {"/" "/ui"}}
          :authentication {}})
+
+; TODO: make a page that is for logged in - maybe lists repos
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
@@ -34,9 +37,11 @@
          :http (jetty-server (:http config))
          :example (endpoint-component example-endpoint)
          :oauth (endpoint-component oauth-endpoint)
+         :ui (endpoint-component ui-endpoint)
          :github-config (:github config))
         (component/system-using
          {:http [:app]
-          :app  [:example :oauth]
+          :app  [:example :oauth :ui]
           :example []
+          :ui []
           :oauth [:github-config]}))))

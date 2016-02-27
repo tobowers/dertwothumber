@@ -1,4 +1,4 @@
-(ns dertwothumber.static-views.loading-page
+(ns dertwothumber.static-view.loading-page
   (:require [cheshire.core :refer :all])
   (:use [hiccup.core]
         [hiccup.page]))
@@ -12,5 +12,5 @@
          [:body
            (if content [:div content])
            [:div {:id "app"} "Loading..."]
-           [:script {:type "text/javascript"} (generate-string {:__initialState initial-state})]
+           [:script {:type "text/javascript"} (str "__initialState=" (generate-string initial-state))]
            (include-js "/js/main.js")]))

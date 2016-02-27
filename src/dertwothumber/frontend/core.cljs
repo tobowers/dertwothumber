@@ -2,18 +2,8 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
-            [accountant.core :as accountant]))
-
-;; -------------------------
-;; Views
-
-(defn home-page []
-  [:div [:h2 "Welcome to reagent-test"]
-   [:div [:a {:href "/about"} "go to about page"]]])
-
-(defn about-page []
-  [:div [:h2 "About reagent-test"]
-   [:div [:a {:href "/"} "go to the home page"]]])
+            [accountant.core :as accountant]
+            [dertwothumber.frontend.page.home :as home-page]))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -22,10 +12,10 @@
 ;; Routes
 
 (secretary/defroute "/" []
-                    (session/put! :current-page #'home-page))
+                    (session/put! :current-page #'home-page/home-page))
 
-(secretary/defroute "/about" []
-                    (session/put! :current-page #'about-page))
+(secretary/defroute "/ui" []
+                    (session/put! :current-page #'home-page/home-page))
 
 ;; -------------------------
 ;; Initialize app
@@ -34,6 +24,7 @@
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
+  (session/reset! (js->clj (.-__initialState js/window)))
   (accountant/configure-navigation!)
   (accountant/dispatch-current!)
   (mount-root))

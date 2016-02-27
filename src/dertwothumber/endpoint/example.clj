@@ -1,7 +1,7 @@
 (ns dertwothumber.endpoint.example
   (:require [compojure.core :refer :all]
             [clojure.java.io :as io]
-            [dertwothumber.static-views.loading-page :as loading-page])
+            [dertwothumber.static-view.loading-page :as loading-page])
   (:use [ring.middleware.session]
         [ring.util.response]))
 
