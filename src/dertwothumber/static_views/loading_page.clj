@@ -13,5 +13,5 @@
          [:body
            (if content [:div content])
            [:div {:id "app"} "Loading..."]
-           [:script {:type "text/javascript"} (generate-string initial-state)]
+           [:script {:type "text/javascript"} (generate-string {:__initialState initial-state})]
            (include-js "/js/main.js")]))

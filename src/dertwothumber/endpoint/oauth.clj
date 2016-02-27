@@ -43,5 +43,4 @@
                                                                     :as :x-www-form-urlencoded})
                                                          :body))))
       (GET "/github/success" {params :params}
-        (println params)
         (str "success" params))))
