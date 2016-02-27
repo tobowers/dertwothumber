@@ -30,7 +30,6 @@
     (context "/oauth" []
       (GET "/github" []
         (let [config (:github-config config)]
-          (println "/github oauth params: " config)
           (redirect (authorize-uri (oauth2-params config)))))
       (GET "/github/authorize" {params :params}
         (let [oauth2-params (oauth2-params (:github-config config))
@@ -38,13 +37,11 @@
                            :client_id    (:client-id oauth2-params)
                            :client_secret (:client-secret oauth2-params)
                            :redirect_uri (:redirect-uri oauth2-params)}]
-          (println "form params: " form-params)
-          (println "oauth2-params: " oauth2-params)
           (-> (http/post (:access-token-uri oauth2-params)
                          {:form-params form-params
                           :as :x-www-form-urlencoded})
               :body
-              (println))))))
+              (str " <- body"))))))
       (GET "/github/success" {params :params}
         (println params)
         (str "success" params))

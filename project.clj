@@ -25,7 +25,10 @@
                   :exclusions [org.clojure/tools.reader]]
                  [tentacles "0.5.1"]
                  [cljs-http "0.1.39"]
-                 [clj-http "2.1.0"]]
+                 [clj-http "2.1.0"]
+                 [ring/ring-mock "0.3.0"]
+                 [clj-http-fake "1.0.2"]
+                 [buddy/buddy-auth "0.9.0"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]]
@@ -63,4 +66,6 @@
                    :repl-options {:init-ns user
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
                    :env {:port 3000}}
-   :project/test  {}})
+   :project/test  {:env {:github-client-id "fake-github-client-id"
+                         :github-client-secret "fake-github-client-secret"
+                         :app-host "http://fake-host:3000"}}})

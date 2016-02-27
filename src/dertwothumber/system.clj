@@ -9,6 +9,8 @@
             [ring.component.jetty :refer [jetty-server]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
+            [buddy.auth.middleware :refer [wrap-authentication]]
+            [buddy.auth.backends.token :refer [jws-backend]]
             [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]])
   (:use [ring.middleware.session.cookie]))
