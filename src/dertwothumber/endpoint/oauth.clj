@@ -1,6 +1,7 @@
 (ns dertwothumber.endpoint.oauth
   (:require [compojure.core :refer :all]
-            [clj-http.client :as http])
+            [clj-http.client :as http]
+            [dertwothumber.static-views.loading-page :as loading-page])
   (:use [ring.middleware.session]
         [ring.util.response]
         [ring.util.codec]))
@@ -37,11 +38,10 @@
                            :client_id    (:client-id oauth2-params)
                            :client_secret (:client-secret oauth2-params)
                            :redirect_uri (:redirect-uri oauth2-params)}]
-          (-> (http/post (:access-token-uri oauth2-params)
-                         {:form-params form-params
-                          :as :x-www-form-urlencoded})
-              :body
-              (str " <- body"))))))
+          (loading-page/loading-page :initial-state (-> (http/post (:access-token-uri oauth2-params)
+                                                                   {:form-params form-params
+                                                                    :as :x-www-form-urlencoded})
+                                                         :body))))
       (GET "/github/success" {params :params}
         (println params)
-        (str "success" params))
+        (str "success" params))))

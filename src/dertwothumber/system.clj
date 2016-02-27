@@ -10,7 +10,6 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [buddy.auth.middleware :refer [wrap-authentication]]
-            [buddy.auth.backends.token :refer [jws-backend]]
             [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]])
   (:use [ring.middleware.session.cookie]))
@@ -19,12 +18,14 @@
   {:app {:middleware [[wrap-not-found :not-found]
                       [wrap-webjars]
                       [wrap-defaults :defaults]
-                      [wrap-route-aliases :aliases]]
+                      [wrap-route-aliases :aliases]
+                      [wrap-authentication :authentication]]
          :not-found  (io/resource "dertwothumber/errors/404.html")
          :defaults   (meta-merge site-defaults {:static  {:resources "dertwothumber/public"}
                                                 :session {:store (cookie-store {:key "a 16-byte secret"})
                                                           :cookie-attrs {:max-age 3600}}})
-         :aliases    {"/" "/index.html"}}})
+         :aliases    {"/" "/index.html"}}
+         :authentication {}})
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
