@@ -1,8 +1,7 @@
 (ns dertwothumber.static-views.loading-page
   (:require [cheshire.core :refer :all])
   (:use [hiccup.core]
-        [hiccup.page]
-        ))
+        [hiccup.page]))
 
 (defn loading-page
   [& {:keys [content initial-state]}]
