@@ -29,10 +29,12 @@
                  [ring/ring-mock "0.3.0"]
                  [clj-http-fake "1.0.2"]
                  [buddy/buddy-auth "0.9.0"]
-                 [cheshire "5.5.0"]]
+                 [cheshire "5.5.0"]
+                 ]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
-            [lein-cljsbuild "1.1.2"]]
+            [lein-cljsbuild "1.1.2"]
+            [lein-doo "0.1.6"]]
   :generators [[duct/generators "0.5.8"]]
   :duct {:ns-prefix dertwothumber}
   :main ^:skip-aot dertwothumber.main
@@ -44,7 +46,13 @@
    {:main {:jar true
            :source-paths ["src"]
            :compiler {:output-to "target/cljsbuild/dertwothumber/public/js/main.js"
-                      :optimizations :advanced}}}}
+                      :optimizations :advanced}}
+    :test {:source-paths ["src" "test"]
+           :compiler {:output-to "resources/public/js/testable.js"
+                      :main dertwothumber.test-runner
+                      :optimizations :none
+                      :target :nodejs}}}}
+
   :aliases {"gen"   ["generate"]
             "setup" ["do" ["generate" "locals"]]}
   :profiles
