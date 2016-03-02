@@ -1,6 +1,6 @@
 (ns dertwothumber.frontend.backend.repos
   (:require [reagent.session :as session]
-            [cljs-http :as http]
+            [cljs-http.client :as http]
             [cljs.core.async :refer [<!]]))
 
 
