@@ -49,5 +49,6 @@
            (-> (redirect "/ui")
                (assoc :session session))
          ))
-      (GET "/github/success" {params :params}
-        (str "success" params))))
+      (GET "/logout" []
+        (-> (redirect "/ui")
+            (assoc :session nil)))))

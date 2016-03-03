@@ -22,4 +22,9 @@
         (is (= 302 (:status response)))
         (is (= "1234" (-> (:session response)
                         (:access-token))))
-      ))))
+      )))
+  (testing "logging out"
+    (let [response (handler (mock/request :get "/oauth/logout" {:session {:user "bob"}}))]
+      (is (= 302 (:status response)))
+      (is (= nil (:session response)))
+      )))
