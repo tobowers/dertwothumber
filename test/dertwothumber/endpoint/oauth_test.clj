@@ -3,7 +3,7 @@
             [clojure.test :refer :all]
             [ring.mock.request :as mock]
             [dertwothumber.endpoint.oauth :as oauth]
-            )
+            [cheshire.core :refer :all])
   (:use [clj-http.fake]))
 
 (def handler
@@ -17,11 +17,15 @@
              (get (:headers response) "Location")))
       ))
   (testing "handling github response"
-    (with-fake-routes {"https://github.com/login/oauth/access_token" {:post (fn [req] {:status 200 :headers {} :body "access_token=1234"})}}
+    (with-fake-routes {"https://github.com/login/oauth/access_token" {:post (fn [req] {:status 200 :headers {} :body "access_token=1234"})}
+                       "https://api.github.com/user?access_token=1234" {:get (fn [req] {:status 200 :headers {} :body (generate-string {:login "bob"})})}}
       (let [response (handler (mock/request :get "/oauth/github/authorize" ))]
         (is (= 302 (:status response)))
         (is (= "1234" (-> (:session response)
-                        (:access-token))))
+                          :access-token)))
+        (is (= "bob") (-> (:session response)
+                          :user
+                          :login))
       )))
   (testing "logging out"
     (let [response (handler (mock/request :get "/oauth/logout" {:session {:user "bob"}}))]

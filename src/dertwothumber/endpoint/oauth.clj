@@ -34,8 +34,13 @@
                                 :client_secret (:client-secret oauth2-params)
                                 :redirect_uri (:redirect-uri oauth2-params)}
                   :as :x-www-form-urlencoded})
-      :body))
+      :body
+      :access_token))
 
+(defn- fetch-github-user [access-token]
+  (-> (http/get "https://api.github.com/user" {:query-params {:access_token access-token}
+                                                 :as :json})
+      :body))
 
 (defn oauth-endpoint [config]
     (context "/oauth" []
@@ -43,9 +48,10 @@
         (let [config (:github-config config)]
           (redirect (authorize-uri (oauth2-params config)))))
       (GET "/github/authorize" {params :params session :session}
-        (let [oauth2-params   (oauth2-params (:github-config config))
-              github-response (fetch-github-access-token oauth2-params (:code params))
-              session         (assoc session :access-token (:access_token github-response))]
+        (let [oauth2-params (oauth2-params (:github-config config))
+              access-token  (fetch-github-access-token oauth2-params (:code params))
+              user          (fetch-github-user access-token)
+              session       (assoc session :access-token access-token :user user)]
            (-> (redirect "/ui")
                (assoc :session session))
          ))
