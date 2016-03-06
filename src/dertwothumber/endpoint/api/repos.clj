@@ -4,7 +4,7 @@
             [tentacles.repos :as repos])
   (:use [ring.middleware.session]))
 
-(defn repos-endpont [config]
+(defn repos-endpoint [config]
   (context "/api" []
     (GET "/repos" {session :session} []
       (let [user (:user session)]
