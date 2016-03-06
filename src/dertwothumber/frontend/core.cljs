@@ -3,6 +3,7 @@
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
+            [dertwothumber.frontend.actions :as actions]
             [dertwothumber.frontend.page.home :as home-page]))
 
 (defn current-page []
@@ -16,6 +17,9 @@
 
 (secretary/defroute "/ui" []
                     (session/put! :current-page #'home-page/home-page))
+
+(secretary/defroute "/repos" []
+                    (actions/repo-request))
 
 ;; -------------------------
 ;; Initialize app
