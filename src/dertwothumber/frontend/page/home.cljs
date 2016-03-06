@@ -9,7 +9,10 @@
   [:div
     [:h1 "Welcome to dertwothumber"]
     (if (session/get :access-token)
-      [:p "It appears you are logged in"]
+      [:div
+       [:p "It appears you are logged in"]
+       [:p (str "user: " (session/get :user))]
+      ]
       [:div
         [:p "It appears you are not logged in"]
         [:a {:href "/oauth/github"} "Login"]])])
