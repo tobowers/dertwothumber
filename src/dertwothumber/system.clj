@@ -12,6 +12,7 @@
             [buddy.auth.middleware :refer [wrap-authentication]]
             [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
+            [dertwothumber.endpoint.api.repos :refer [repos-endpoint]]
             [dertwothumber.endpoint.ui :refer [ui-endpoint]])
   (:use [ring.middleware.session.cookie]))
 
@@ -38,10 +39,12 @@
          :example (endpoint-component example-endpoint)
          :oauth (endpoint-component oauth-endpoint)
          :ui (endpoint-component ui-endpoint)
+         :repos (endpoint-component repos-endpoint)
          :github-config (:github config))
         (component/system-using
          {:http [:app]
-          :app  [:example :oauth :ui]
+          :app  [:example :oauth :ui :repos]
           :example []
           :ui []
+          :repos []
           :oauth [:github-config]}))))
