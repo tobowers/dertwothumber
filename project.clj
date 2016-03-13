@@ -30,7 +30,7 @@
                  [clj-http-fake "1.0.2"]
                  [buddy/buddy-auth "0.9.0"]
                  [cheshire "5.5.0"]
-                 ]
+                 [com.cognitect/transit-cljs "0.8.237"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]
