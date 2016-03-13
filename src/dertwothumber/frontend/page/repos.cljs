@@ -9,4 +9,4 @@
     [:h1 "Repos"]
     (let [repos (session/get :repos)]
       (for [repo repos]
-        [:li (:description repos)]))])
+        [:li (repo "description")]))])
