@@ -9,6 +9,6 @@
   (context "/api" []
     (GET "/repos" {session :session} []
       (let [user  (:user session)
-            repos (repos/user-repos (:login user) {:oauth-token (:access-token session)})]
+            repos (repos/user-repos (:login user) {:per-page 500 :client-id (:client-id config) :access-token (:access-token session)})]
         (generate-string repos)))))
 
