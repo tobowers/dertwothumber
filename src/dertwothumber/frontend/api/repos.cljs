@@ -1,9 +1,7 @@
-(ns dertwothumber.frontend.backend.repos
+(ns dertwothumber.frontend.api.repos
   (:require [reagent.session :as session]
-            [cljs-http.client :as http]
-            [cljs.core.async :refer [<!]]))
+            [cljs-http.client :as http]))
 
 
 (defn fetch-repos []
-  (let [response (<! (http/get "/api/repos"))]
-    (println response)))
+  (http/get "/api/repos"))

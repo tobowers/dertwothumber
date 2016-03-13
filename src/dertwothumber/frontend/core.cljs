@@ -4,7 +4,8 @@
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
             [dertwothumber.frontend.actions :as actions]
-            [dertwothumber.frontend.page.home :as home-page]))
+            [dertwothumber.frontend.page.home :as home-page]
+            [dertwothumber.frontend.page.loading :as loading-page]))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -18,7 +19,7 @@
 (secretary/defroute "/ui" []
                     (session/put! :current-page #'home-page/home-page))
 
-(secretary/defroute "/repos" []
+(secretary/defroute "/ui/repos" []
                     (actions/repo-request))
 
 ;; -------------------------
@@ -30,5 +31,7 @@
 (defn init! []
   (session/reset! (js->clj (.-__initialState js/window) :keywordize-keys true))
   (accountant/configure-navigation!)
+  (if-not (session/get :current-page)
+    (session/put! :current-page #'loading-page/loading-page))
   (accountant/dispatch-current!)
   (mount-root))
