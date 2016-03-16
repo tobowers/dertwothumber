@@ -15,3 +15,6 @@
       (>! response-channel (transit/read reader body))))
     response-channel))
 
+(defn setup-repo [repo-name]
+  (go
+    (http/put (str "/api/repos/" repo-name))))

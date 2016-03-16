@@ -1,14 +1,23 @@
 (ns dertwothumber.frontend.core
+  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as reagent :refer [atom]]
             [reagent.session :as session]
             [secretary.core :as secretary :include-macros true]
             [accountant.core :as accountant]
-            [dertwothumber.frontend.actions :as actions]
             [dertwothumber.frontend.page.home :as home-page]
-            [dertwothumber.frontend.page.loading :as loading-page]))
+            [dertwothumber.frontend.page.loading :as loading-page]
+            [dertwothumber.frontend.page.repos :as repo-page]
+            [dertwothumber.frontend.api.repos :as repos]
+            [cljs.core.async :refer [<!]]))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
+
+(defn repo-request []
+  (go
+    (let [user-repos (<! (repos/fetch-repos))]
+      (session/put! :repos user-repos)
+      (session/put! :current-page #'repo-page/repo-page))))
 
 ;; -------------------------
 ;; Routes
@@ -20,7 +29,7 @@
                     (session/put! :current-page #'home-page/home-page))
 
 (secretary/defroute "/ui/repos" []
-                    (actions/repo-request))
+                    (repo-request))
 
 ;; -------------------------
 ;; Initialize app
