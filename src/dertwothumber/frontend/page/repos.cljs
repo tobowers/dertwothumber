@@ -16,4 +16,4 @@
     [:h1 "Repos"]
     (let [repos (session/get :repos)]
       (for [repo repos]
-        ^{:key (repo "full_name")} [:li (repo "full_name")]))])
+        ^{:key (repo "full_name")} [:li {:on-click #(repo-setup (repo "full_name"))} (repo "full_name")]))])
