@@ -2,7 +2,8 @@
   (:require [compojure.core :refer :all]
             [clj-http.client :as http]
             [tentacles.repos :as repos]
-            [cheshire.core :refer :all])
+            [cheshire.core :refer :all]
+            )
   (:use [ring.middleware.session]))
 
 (defn repos-endpoint [config]
@@ -11,9 +12,10 @@
       (let [user  (:user session)
             repos (repos/user-repos (:login user) {:all-pages true :client-id (:client-id config) :access-token (:access-token session)})]
         (generate-string repos)))
-    (PUT "/repos/:repo-name" {session :session {repo-name :repo-name} :params} []
+    (PUT "/repos/*" {session :session {repo-name :*} :params} []
       (let [user (:user session)]
-        (repos/create-hook (:login user) repo-name "web" {:content_type "json" :url (:app-host config)} {:active true :events [:pull_request_review_comment :push :pull_request]})))))
+        (println (:login user) repo-name "web" {:content_type "json" :url (:app-host config)} {:access-token (:access-token session) :active true :events [:pull_request_review_comment :push :pull_request]})
+        (repos/create-hook (:login user) repo-name "web" {:content_type "json" :url (:app-host config)} {:access-token (:access-token session) :active true :events [:pull_request_review_comment :push :pull_request]})))))
 
 
 

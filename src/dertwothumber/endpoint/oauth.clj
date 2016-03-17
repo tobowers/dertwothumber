@@ -13,7 +13,7 @@
    :authorize-uri  "https://github.com/login/oauth/authorize"
    :redirect-uri (str (:app-host config) "/oauth/github/authorize")
    :access-token-uri "https://github.com/login/oauth/access_token"
-   :scope "repo"})
+   :scope "repo,admin:repo_hook"})
 
 (defn- authorize-uri [client-params]
   (str
