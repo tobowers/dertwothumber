@@ -10,12 +10,17 @@
   (context "/api" []
     (GET "/repos" {session :session} []
       (let [user  (:user session)
-            repos (repos/user-repos (:login user) {:all-pages true :client-id (:client-id config) :access-token (:access-token session)})]
+            repos (repos/user-repos (:login user) {:all-pages true :oauth-token (:access-token session)})]
         (generate-string repos)))
-    (PUT "/repos/*" {session :session {repo-name :*} :params} []
-      (let [user (:user session)]
-        (println (:login user) repo-name "web" {:content_type "json" :url (:app-host config)} {:access-token (:access-token session) :active true :events [:pull_request_review_comment :push :pull_request]})
-        (repos/create-hook (:login user) repo-name "web" {:content_type "json" :url (:app-host config)} {:access-token (:access-token session) :active true :events [:pull_request_review_comment :push :pull_request]})))))
+    (PUT "/repos/:repo-name" {session :session {repo-name :repo-name} :params} []
+      (let [user-id    (:login (:user session))
+            url        (:app-host (:github-config config))
+            event-list [:pull_request_review_comment :push :pull_request]]
+        (repos/create-hook user-id repo-name "web"
+                           {:url url}
+                           {:active true
+                            :events event-list
+                            :oauth-token (:access-token session)})))))
 
 
 

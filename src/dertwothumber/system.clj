@@ -46,5 +46,5 @@
           :app  [:example :oauth :ui :repos]
           :example []
           :ui []
-          :repos []
+          :repos [:github-config]
           :oauth [:github-config]}))))

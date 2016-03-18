@@ -39,7 +39,7 @@
 
 (defn- fetch-github-user [access-token]
   (-> (http/get "https://api.github.com/user" {:query-params {:access_token access-token}
-                                                 :as :json})
+                                               :as :json})
       :body))
 
 (defn oauth-endpoint [config]
