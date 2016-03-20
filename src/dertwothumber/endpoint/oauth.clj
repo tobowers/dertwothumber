@@ -6,8 +6,7 @@
         [ring.util.response]
         [ring.util.codec]))
 
-(defn- oauth2-params
-  [config]
+(defn- oauth2-params [config]
   {:client-id (:client-id config)
    :client-secret (:client-secret config)
    :authorize-uri  "https://github.com/login/oauth/authorize"
@@ -53,8 +52,8 @@
               user          (fetch-github-user access-token)
               session       (assoc session :access-token access-token :user user)]
            (-> (redirect "/ui")
-               (assoc :session session))
-         ))
+               (assoc :session session))))
+
       (GET "/logout" []
         (-> (redirect "/ui")
             (assoc :session nil)))))

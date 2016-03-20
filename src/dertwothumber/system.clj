@@ -12,6 +12,7 @@
             [buddy.auth.middleware :refer [wrap-authentication]]
             [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
+            [dertwothumber.endpoint.webhooks :refer [webhooks-endpoint]]
             [dertwothumber.endpoint.api.repos :refer [repos-endpoint]]
             [dertwothumber.endpoint.ui :refer [ui-endpoint]])
   (:use [ring.middleware.session.cookie]))
@@ -25,26 +26,27 @@
          :not-found  (io/resource "dertwothumber/errors/404.html")
          :defaults   (meta-merge site-defaults {:static  {:resources "dertwothumber/public"}
                                                 :session {:store (cookie-store {:key "a 16-byte sekret"})
-                                                          :cookie-attrs {:max-age 3600}}})
+                                                          :cookie-attrs {:max-age 3600}}
+                                                :security  {:anti-forgery false}})
          :aliases    {"/" "/ui"}}
-         :authentication {}})
-
-; TODO: make a page that is for logged in - maybe lists repos
+        :authentication {}})
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
     (-> (component/system-map
-         :app  (handler-component (:app config))
-         :http (jetty-server (:http config))
-         :example (endpoint-component example-endpoint)
-         :oauth (endpoint-component oauth-endpoint)
-         :ui (endpoint-component ui-endpoint)
-         :repos (endpoint-component repos-endpoint)
-         :github-config (:github config))
+          :app  (handler-component (:app config))
+          :http (jetty-server (:http config))
+          :example (endpoint-component example-endpoint)
+          :oauth (endpoint-component oauth-endpoint)
+          :ui (endpoint-component ui-endpoint)
+          :repos (endpoint-component repos-endpoint)
+          :github-config (:github config)
+          :webhooks (endpoint-component webhooks-endpoint))
         (component/system-using
          {:http [:app]
-          :app  [:example :oauth :ui :repos]
+          :app  [:example :oauth :ui :repos :webhooks]
           :example []
           :ui []
+          :webhooks []
           :repos [:github-config]
           :oauth [:github-config]}))))

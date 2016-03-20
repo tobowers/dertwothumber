@@ -2,8 +2,7 @@
   (:require [compojure.core :refer :all]
             [clj-http.client :as http]
             [tentacles.repos :as repos]
-            [cheshire.core :refer :all]
-            )
+            [cheshire.core :refer :all])
   (:use [ring.middleware.session]))
 
 (defn repos-endpoint [config]
@@ -14,7 +13,7 @@
         (generate-string repos)))
     (PUT "/repos/:repo-name" {session :session {repo-name :repo-name} :params} []
       (let [user-id    (:login (:user session))
-            url        (:app-host (:github-config config))
+            url        (str (:app-host (:github-config config)) "/webhooks")
             event-list [:pull_request_review_comment :push :pull_request]]
         (repos/create-hook user-id repo-name "web"
                            {:url url}

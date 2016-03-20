@@ -28,13 +28,13 @@
     <orderEntry type="library" name="Leiningen: clj-tuple:0.2.2" level="project" />
     <orderEntry type="library" name="Leiningen: cljs-http:0.1.39" level="project" />
     <orderEntry type="library" name="Leiningen: cljsjs/react:0.13.3-1" level="project" />
-    <orderEntry type="library" name="Leiningen: clojure-complete:0.2.3" level="project" />
+    <orderEntry type="library" name="Leiningen: clojure-complete:0.2.4" level="project" />
     <orderEntry type="library" name="Leiningen: clout:2.1.2" level="project" />
     <orderEntry type="library" name="Leiningen: com.cemerick/clojurescript.test:0.2.3-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Leiningen: com.cemerick/piggieback:0.2.1" level="project" />
     <orderEntry type="library" name="Leiningen: com.cemerick/url:0.1.1" level="project" />
-    <orderEntry type="library" name="Leiningen: com.cognitect/transit-cljs:0.8.232" level="project" />
-    <orderEntry type="library" name="Leiningen: com.cognitect/transit-js:0.8.755" level="project" />
+    <orderEntry type="library" name="Leiningen: com.cognitect/transit-cljs:0.8.237" level="project" />
+    <orderEntry type="library" name="Leiningen: com.cognitect/transit-js:0.8.846" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-annotations:2.3.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-core:2.5.3" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-databind:2.3.3" level="project" />
