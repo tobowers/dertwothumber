@@ -1,0 +1,5 @@
+dynamodb:
+  build: dynamodb_local
+  ports:
+    - 8000:8000
+    - 4567
