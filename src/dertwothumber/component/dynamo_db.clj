@@ -19,7 +19,7 @@
 
   DatabaseFunctions
   (-create-table [this table-name hash-keydef opts]
-    (far/create-table (:client-ops this) table-name hash-keydef opts))
+    (far/ensure-table (:client-ops this) table-name hash-keydef opts))
   (freeze [attribute-map]
     (far/freeze attribute-map))
   (put-item [this table item]

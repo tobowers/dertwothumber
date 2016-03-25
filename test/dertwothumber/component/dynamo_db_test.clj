@@ -8,7 +8,10 @@
                   :endpoint "http://dynamodb:8000"})
 
 (deftest smoke-test
-         (testing "it can create a table"
-                  (let [db (component/start (dynamo-db/dynamo-db-component test-config))]
-                    (dynamo-db/create-table db :bob [:id :n]))))
-
+  (let [db (component/start (dynamo-db/dynamo-db-component test-config))]
+    (testing "it can create a table"
+      (dynamo-db/create-table db :bob [:id :n]))
+    (testing "it can put an item and then get it back"
+      (dynamo-db/create-table db :bob [:id :n])
+      (dynamo-db/put-item db :bob {:id 0 :name "bobby"})
+      (is (= "bobby" (:name (dynamo-db/get-item db :bob {:id 0})))))))
