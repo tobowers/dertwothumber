@@ -16,7 +16,7 @@
     (go
       (let [response (<! (http/get "/api/repos"))
             body     (:body response)]
-      (>! response-channel (transit/read reader body))))
+       (>! response-channel (transit/read reader body))))
     response-channel))
 
 (defn setup-repo [repo-name & headers]
