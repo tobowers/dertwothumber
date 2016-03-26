@@ -11,7 +11,7 @@
       (GET "/repos" {session :session} []
            (let [login  (:login (:user session))
                  access-token (:access-token session)
-                 repos (list-repos repo-component login)]
+                 repos (list-repos repo-component login access-token)]
              (generate-string repos)))
       (PUT "/repos/:repo-name" {session :session {repo-name :repo-name}
                                 :params} []

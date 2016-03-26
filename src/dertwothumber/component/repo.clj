@@ -29,11 +29,13 @@
                                  :oauth-token access-token}))
 
   (create-hook [this user-id repo-name access-token]
-    (repos/create-hook user-id repo-name "web"
-                     {:url url}
-                     {:active true
-                      :events event-list
-                      :oauth-token access-token}))
+    (let [github-config (:github-config this)]
+      (tentacles.repos/create-hook user-id repo-name "web"
+                                   {:url (:webhooks-url github-config)}
+                                   {:active true
+                                    :events [:pull_request_review_comment :push
+                                             :pull_request]
+                                    :oauth-token access-token}))))
 
 (defn create-table [dynamo-db]
   (dynamo-db/create-table dynamo-db :repos [:full-name :s]))

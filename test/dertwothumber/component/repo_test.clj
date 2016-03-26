@@ -7,10 +7,15 @@
 (def repo-system
   (let [test-config {:access-key "<AWS_DYNAMODB_ACCESS_KEY>"
                      :secret-key "<AWS_DYNAMODB_SECRET_KEY>"
-                     :endpoint "http://dynamodb:8000"}]
+                     :endpoint "http://dynamodb:8000"}
+        github-config {:client-id "client-id"
+                       :client-secret "super secret"
+                       :app-host "http://localhost"
+                       :webhooks-url "http://localhost/webhooks"}]
+
     (-> (component/system-map
           :db   (dynamo-db/dynamo-db-component test-config)
-          :repo (repo/repo-component))
+          :repo (repo/repo-component github-config))
         (component/system-using
           {:db []
            :repo [:db]}))))
