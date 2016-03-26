@@ -47,11 +47,11 @@
           :repo (repo-component (:github config)))
         (component/system-using
          {:http [:app]
-          :app  [:oauth :ui :repos :webhooks]
+          :app  [:oauth :ui :repos-endpoint :webhooks]
           :ui []
           :webhooks []
-          :repos-endpoint [:github-config :repo-db]
-          :oauth [:github-config]
+          :repos-endpoint [:repo]
+          :oauth []
           :dynamo-db []
           :user-db [:dynamo-db]
           :repo [:dynamo-db]}))))

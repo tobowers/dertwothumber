@@ -12,9 +12,9 @@
     (-> (component/system-map
           :repos (endpoint-component repos-endpoint)
           :dynamo-db test-config
-          :repo-db (repo-component))
+          :repo (repo-component))
         (component/system-using
-          {:repos [:github-config :repo-db]
+          {:repos [:repo]
            :dynamo-db []
            :repo-db [:dynamo-db]}))))
 
@@ -25,4 +25,3 @@
       (is (= 200 (-> (session repos-endpoint)
                      (request "/repos")
                      (:response)))))))
-

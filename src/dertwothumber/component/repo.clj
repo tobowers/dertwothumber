@@ -13,8 +13,10 @@
 
 (defrecord Repo []
   component/Lifecycle
-  (start [component])
-  (stop [component])
+  (start [component]
+    component)
+  (stop [component]
+    component)
 
   DbFunctions
   (create-repo [this attributes]
