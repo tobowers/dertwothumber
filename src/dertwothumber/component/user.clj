@@ -22,8 +22,8 @@
     (dynamo-db/get-item (:db this) :users {:login login})))
 
 
-(defn create-table [dynamodb]
-  (dynamo-db/create-table dynamodb :users [:login :s]))
+(defn create-table [db]
+  (dynamo-db/create-table db :users [:login :s]))
 
-(defn user-component [dynamo-db]
-  (User. dynamo-db))
+(defn user-component []
+  (User. {}))

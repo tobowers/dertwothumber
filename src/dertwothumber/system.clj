@@ -14,7 +14,10 @@
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
             [dertwothumber.endpoint.webhooks :refer [webhooks-endpoint]]
             [dertwothumber.endpoint.api.repos :refer [repos-endpoint]]
-            [dertwothumber.endpoint.ui :refer [ui-endpoint]])
+            [dertwothumber.endpoint.ui :refer [ui-endpoint]]
+            [dertwothumber.component.dynamo-db :refer [dynamo-db-component]]
+            [dertwothumber.component.user :refer [user-component]]
+            [dertwothumber.component.repo :refer [repo-component]])
   (:use [ring.middleware.session.cookie]))
 
 (def base-config
@@ -41,7 +44,10 @@
           :ui (endpoint-component ui-endpoint)
           :repos (endpoint-component repos-endpoint)
           :github-config (:github config)
-          :webhooks (endpoint-component webhooks-endpoint))
+          :webhooks (endpoint-component webhooks-endpoint)
+          :dynamo-db (dynamo-db-component (:dynamodb config))
+          :user-db (user-component)
+          :repo-db (repo-component))
         (component/system-using
          {:http [:app]
           :app  [:example :oauth :ui :repos :webhooks]
@@ -49,4 +55,7 @@
           :ui []
           :webhooks []
           :repos [:github-config]
-          :oauth [:github-config]}))))
+          :oauth [:github-config]
+          :dynamo-db []
+          :user-db [:dynamo-db]
+          :repo-db [:dynamo-db]}))))
