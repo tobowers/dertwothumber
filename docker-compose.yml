@@ -1,0 +1,17 @@
+dynamodb:
+  build: dynamodb_local
+  ports:
+    - 8000:8000
+    - 4567
+
+web:
+  build: .
+  volumes:
+    - .:/usr/src/app
+    - ./docker-state/.m2:/root/.m2
+  links:
+    - dynamodb
+  ports:
+    - 3000:3000
+  stdin_open: true
+  tty: true

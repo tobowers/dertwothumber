@@ -9,5 +9,11 @@
 
 (def environ
   {:http {:port (some-> env :port Integer.)}
-   :github {:client-id (env :github-client-id) :client-secret (env :github-client-secret) :app-host (env :app-host)}
-   :authentication (session-backend)})
+   :github {:client-id (env :github-client-id)
+            :client-secret (env :github-client-secret)
+            :app-host (env :app-host)
+            :webhooks-url (str (env :app-host) "/webhooks")}
+   :authentication (session-backend)
+   :dynamodb {:access-key "<AWS_DYNAMODB_ACCESS_KEY>"
+              :secret-key "<AWS_DYNAMODB_SECRET_KEY>"
+              :endpoint "http://dynamodb:8000"}})

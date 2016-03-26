@@ -10,11 +10,13 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [buddy.auth.middleware :refer [wrap-authentication]]
-            [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
             [dertwothumber.endpoint.webhooks :refer [webhooks-endpoint]]
             [dertwothumber.endpoint.api.repos :refer [repos-endpoint]]
-            [dertwothumber.endpoint.ui :refer [ui-endpoint]])
+            [dertwothumber.endpoint.ui :refer [ui-endpoint]]
+            [dertwothumber.component.dynamo-db :refer [dynamo-db-component]]
+            [dertwothumber.component.user :refer [user-component]]
+            [dertwothumber.component.repo :refer [repo-component]])
   (:use [ring.middleware.session.cookie]))
 
 (def base-config
@@ -36,17 +38,20 @@
     (-> (component/system-map
           :app  (handler-component (:app config))
           :http (jetty-server (:http config))
-          :example (endpoint-component example-endpoint)
-          :oauth (endpoint-component oauth-endpoint)
+          :oauth (endpoint-component (oauth-endpoint (:github config)))
           :ui (endpoint-component ui-endpoint)
-          :repos (endpoint-component repos-endpoint)
-          :github-config (:github config)
-          :webhooks (endpoint-component webhooks-endpoint))
+          :repos-endpoint (endpoint-component repos-endpoint)
+          :webhooks (endpoint-component webhooks-endpoint)
+          :dynamo-db (dynamo-db-component (:dynamodb config))
+          :user-db (user-component)
+          :repo (repo-component (:github config)))
         (component/system-using
          {:http [:app]
-          :app  [:example :oauth :ui :repos :webhooks]
-          :example []
+          :app  [:oauth :ui :repos-endpoint :webhooks]
           :ui []
           :webhooks []
-          :repos [:github-config]
-          :oauth [:github-config]}))))
+          :repos-endpoint [:repo]
+          :oauth []
+          :dynamo-db []
+          :user-db [:dynamo-db]
+          :repo [:dynamo-db]}))))

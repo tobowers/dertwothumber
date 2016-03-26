@@ -17,8 +17,7 @@
         user      (get full-name 0)
         repo      (get full-name 1)
         comments  (pulls/comments user repo pr-id {:client-id (:client-id github-config) :client-secret (:client-secret github-config)})]
-    (println "handling a pull request")
-    (println comments)))
+    (println "handling a pull request")))
 
 (defn- is-pull-request [payload]
   (:pull_request payload))
