@@ -20,7 +20,7 @@
                  [reagent-forms "0.5.16"]
                  [reagent-utils "0.1.7"]
                  [hiccup "1.0.5"]
-                 [secretary "1.2.3"]
+                 [zonotope/secretary "2.0.0.1-39090f"]
                  [venantius/accountant "0.1.6"
                   :exclusions [org.clojure/tools.reader]]
                  [tentacles "0.5.1"]
