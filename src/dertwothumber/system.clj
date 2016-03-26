@@ -10,7 +10,6 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.webjars :refer [wrap-webjars]]
             [buddy.auth.middleware :refer [wrap-authentication]]
-            [dertwothumber.endpoint.example :refer [example-endpoint]]
             [dertwothumber.endpoint.oauth :refer [oauth-endpoint]]
             [dertwothumber.endpoint.webhooks :refer [webhooks-endpoint]]
             [dertwothumber.endpoint.api.repos :refer [repos-endpoint]]
@@ -39,7 +38,6 @@
     (-> (component/system-map
           :app  (handler-component (:app config))
           :http (jetty-server (:http config))
-          :example (endpoint-component example-endpoint)
           :oauth (endpoint-component oauth-endpoint)
           :ui (endpoint-component ui-endpoint)
           :repos (endpoint-component repos-endpoint)
@@ -50,11 +48,10 @@
           :repo-db (repo-component))
         (component/system-using
          {:http [:app]
-          :app  [:example :oauth :ui :repos :webhooks]
-          :example []
+          :app  [:oauth :ui :repos :webhooks]
           :ui []
           :webhooks []
-          :repos [:github-config]
+          :repos [:github-config :repo-db]
           :oauth [:github-config]
           :dynamo-db []
           :user-db [:dynamo-db]

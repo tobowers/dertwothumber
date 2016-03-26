@@ -17,8 +17,8 @@
 
 (deftest smoke-test
   (let [system (component/start repo-system)
-        db   (:db system)
-        repo (:repo system)]
+        db     (:db system)
+        repo   (:repo system)]
     (repo/create-table db)
     (testing "creating a repo"
       (repo/create-repo repo {:full-name "tobowers/test-repo" :url "http://something"}))

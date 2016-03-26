@@ -2,10 +2,12 @@
   (:require [compojure.core :refer :all]
             [clj-http.client :as http]
             [tentacles.repos :as repos]
+            [dertwothumber.component.repo :as repo-db]
             [cheshire.core :refer :all])
   (:use [ring.middleware.session]))
 
 (defn repos-endpoint [config]
+  (println config)
   (context "/api" []
     (GET "/repos" {session :session} []
       (let [user  (:user session)

@@ -69,6 +69,7 @@
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [eftest "0.1.0"]
                                   [kerodon "0.7.0"]
+                                  [peridot "0.4.3"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [duct/figwheel-component "0.3.1"]
                                   [figwheel "0.5.0-1"]]
