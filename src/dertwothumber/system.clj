@@ -38,21 +38,20 @@
     (-> (component/system-map
           :app  (handler-component (:app config))
           :http (jetty-server (:http config))
-          :oauth (endpoint-component oauth-endpoint)
+          :oauth (endpoint-component (oauth-endpoint (:github config)))
           :ui (endpoint-component ui-endpoint)
-          :repos (endpoint-component repos-endpoint)
-          :github-config (:github config)
+          :repos-endpoint (endpoint-component repos-endpoint)
           :webhooks (endpoint-component webhooks-endpoint)
           :dynamo-db (dynamo-db-component (:dynamodb config))
           :user-db (user-component)
-          :repo-db (repo-component))
+          :repo (repo-component (:github config)))
         (component/system-using
          {:http [:app]
           :app  [:oauth :ui :repos :webhooks]
           :ui []
           :webhooks []
-          :repos [:github-config :repo-db]
+          :repos-endpoint [:github-config :repo-db]
           :oauth [:github-config]
           :dynamo-db []
           :user-db [:dynamo-db]
-          :repo-db [:dynamo-db]}))))
+          :repo [:dynamo-db]}))))

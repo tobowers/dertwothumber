@@ -41,19 +41,19 @@
                                                :as :json})
       :body))
 
-(defn oauth-endpoint [config]
+(defn oauth-endpoint [github-config]
+  (fn [config]
     (context "/oauth" []
       (GET "/github" []
-        (let [config (:github-config config)]
-          (redirect (authorize-uri (oauth2-params config)))))
+        (redirect (authorize-uri (oauth2-params github-config))))
       (GET "/github/authorize" {params :params session :session}
-        (let [oauth2-params (oauth2-params (:github-config config))
+        (let [oauth2-params (oauth2-params github-config)
               access-token  (fetch-github-access-token oauth2-params (:code params))
               user          (fetch-github-user access-token)
               session       (assoc session :access-token access-token :user user)]
-           (-> (redirect "/ui")
-               (assoc :session session))))
+          (-> (redirect "/ui")
+              (assoc :session session))))
 
       (GET "/logout" []
         (-> (redirect "/ui")
-            (assoc :session nil)))))
+            (assoc :session nil))))))
