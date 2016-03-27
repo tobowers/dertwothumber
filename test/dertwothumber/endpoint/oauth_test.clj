@@ -7,7 +7,7 @@
   (:use [clj-http.fake]))
 
 (def handler
-  (oauth/oauth-endpoint {:github-config {:client-id "test-client-id" :client-secret "test-client-secret" :app-host "http://fake-host"}}))
+  ((oauth/oauth-endpoint {:client-id "test-client-id" :client-secret "test-client-secret" :app-host "http://fake-host"}) {}))
 
 (deftest smoke-test
   (testing "oauth page exists"

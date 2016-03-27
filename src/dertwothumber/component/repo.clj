@@ -25,7 +25,7 @@
     (dynamo-db/get-item (:dynamo-db this) :repos {:full-name full-name}))
 
   GithubFunctions
-  (list-repos [this login access-token]
+  (list-repos [_this login access-token]
     (tentacles.repos/user-repos login
                                 {:all-pages true
                                  :oauth-token access-token}))

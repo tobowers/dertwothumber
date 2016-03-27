@@ -6,24 +6,20 @@
   (create-user [this attributes] "Create a user in the database")
   (get-user [this login] "find the user by login"))
 
-(defrecord User [db]
+(defrecord User []
   component/Lifecycle
   (start [component]
-    (if-not (:db component)
-      (assoc component :db db)
-      component))
-  (stop [component]
-    (dissoc component :db))
+    component)
+  (stop [_component])
 
   UserFunctions
   (create-user [this attributes]
-    (dynamo-db/put-item (:db this) :users attributes))
+    (dynamo-db/put-item (:dynamo-db this) :users attributes))
   (get-user [this login]
-    (dynamo-db/get-item (:db this) :users {:login login})))
+    (dynamo-db/get-item (:dynamo-db this) :users {:login login})))
 
-
-(defn create-table [db]
-  (dynamo-db/create-table db :users [:login :s]))
+(defn create-table [dynamo-db]
+  (dynamo-db/create-table dynamo-db :users [:login :s]))
 
 (defn user-component []
-  (User. {}))
+  (map->User {}))
