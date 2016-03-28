@@ -72,7 +72,8 @@
                                   [peridot "0.4.3"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [duct/figwheel-component "0.3.1"]
-                                  [figwheel "0.5.0-1"]]
+                                  [figwheel "0.5.0-1"]
+                                  [org.clojars.runa/conjure "2.1.3"]]
                    :source-paths ["dev"]
                    :repl-options {:init-ns user
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}

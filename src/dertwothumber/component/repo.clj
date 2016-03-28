@@ -3,6 +3,11 @@
             [com.stuartsierra.component :as component]
             [tentacles.repos]))
 
+(defn encrypt-access-token
+       "This is a noop for now but needs to be fixed for production use"
+       [access-token]
+  access-token)
+
 (defprotocol DbFunctions
   (create-repo [this attributes] "Create a repo in the database")
   (get-repo [this full-name] "get repo by full-name"))
@@ -36,9 +41,13 @@
       (tentacles.repos/create-hook user-id repo-name "web"
                                    {:url (:webhooks-url github-config)}
                                    {:active true
-                                    :events [:pull_request_review_comment :push
+                                    :events [:pull_request_review_comment
+                                             :push
                                              :pull_request]
-                                    :oauth-token access-token}))))
+                                    :oauth-token access-token})
+      (create-repo this {:full-name (str user-id "/" repo-name)
+                         :access-token (encrypt-access-token access-token)
+                         :active true}))))
 
 (defn create-table [dynamo-db]
   (dynamo-db/create-table dynamo-db :repos [:full-name :s]))
