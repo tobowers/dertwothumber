@@ -8,14 +8,12 @@
   (get-item [component table lookup-hash] "get an item from the id")
   (freeze [attribute-map] "pass in a map, get the faraday frozen"))
 
-(defrecord DynamoDb [config]
+(defrecord DynamoDb []
   component/Lifecycle
   (start [component]
-    (if-not (:client-ops component)
-      (assoc component :client-ops config)
-      component))
+    component)
   (stop [component]
-      (dissoc component :client-ops))
+    component)
 
   DatabaseFunctions
   (-create-table [this table-name hash-keydef opts]
@@ -32,4 +30,4 @@
   (-create-table dynamodb table-name hash-keydef opts))
 
 (defn dynamo-db-component [config]
-  (DynamoDb. config))
+  (map->DynamoDb {:client-ops config}))

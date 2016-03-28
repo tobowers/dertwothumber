@@ -4,7 +4,7 @@
             [dertwothumber.component.dynamo-db :as dynamo-db]
             [dertwothumber.component.user :as user]))
 
-(def user-system
+(defn new-user-system []
   (let [test-config {:access-key "<AWS_DYNAMODB_ACCESS_KEY>"
                      :secret-key "<AWS_DYNAMODB_SECRET_KEY>"
                      :endpoint "http://dynamodb:8000"}]
@@ -16,7 +16,7 @@
            :user [:dynamo-db]}))))
 
 (deftest smoke-test
-  (let [system    (component/start user-system)
+  (let [system    (component/start (new-user-system))
         dynamo-db (:dynamo-db system)
         user      (:user system)]
     (user/create-table dynamo-db)

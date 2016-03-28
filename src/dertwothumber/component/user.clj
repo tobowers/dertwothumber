@@ -10,7 +10,8 @@
   component/Lifecycle
   (start [component]
     component)
-  (stop [_component])
+  (stop [component]
+    component)
 
   UserFunctions
   (create-user [this attributes]

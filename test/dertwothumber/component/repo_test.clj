@@ -4,7 +4,7 @@
             [dertwothumber.component.dynamo-db :as dynamo-db]
             [dertwothumber.component.repo :as repo]))
 
-(def repo-system
+(defn new-repo-system []
   (let [test-config {:access-key "<AWS_DYNAMODB_ACCESS_KEY>"
                      :secret-key "<AWS_DYNAMODB_SECRET_KEY>"
                      :endpoint "http://dynamodb:8000"}
@@ -21,7 +21,7 @@
            :repo [:dynamo-db]}))))
 
 (deftest smoke-test
-  (let [system (component/start repo-system)
+  (let [system (component/start (new-repo-system))
         dynamo-db (:dynamo-db system)
         repo   (:repo system)]
     (repo/create-table dynamo-db)
