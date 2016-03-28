@@ -40,4 +40,4 @@
                                                                 {:active true
                                                                  :events [:pull_request_review_comment :push :pull_request]
                                                                  :oauth-token "access-token"}))
-        (is (= true (:active (repo/get-repo repo "user-id/repo-name")))))))
+      (is (= true (:active (repo/get-repo repo "user-id/repo-name")))))))
