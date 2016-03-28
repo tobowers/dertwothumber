@@ -4,7 +4,7 @@
             [dertwothumber.component.dynamo-db :as dynamo-db]
             [dertwothumber.component.repo :as repo]))
 
-(def repo-system
+(defn new-repo-system []
   (let [test-config {:access-key "<AWS_DYNAMODB_ACCESS_KEY>"
                      :secret-key "<AWS_DYNAMODB_SECRET_KEY>"
                      :endpoint "http://dynamodb:8000"}
@@ -14,17 +14,17 @@
                        :webhooks-url "http://localhost/webhooks"}]
 
     (-> (component/system-map
-          :db   (dynamo-db/dynamo-db-component test-config)
+          :dynamo-db   (dynamo-db/dynamo-db-component test-config)
           :repo (repo/repo-component github-config))
         (component/system-using
-          {:db []
-           :repo [:db]}))))
+          {:dynamo-db []
+           :repo [:dynamo-db]}))))
 
 (deftest smoke-test
-  (let [system (component/start repo-system)
-        db     (:db system)
+  (let [system (component/start (new-repo-system))
+        dynamo-db (:dynamo-db system)
         repo   (:repo system)]
-    (repo/create-table db)
+    (repo/create-table dynamo-db)
     (testing "creating a repo"
       (repo/create-repo repo {:full-name "tobowers/test-repo" :url "http://something"}))
     (testing "fetching a repo"
