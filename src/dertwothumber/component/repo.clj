@@ -27,7 +27,8 @@
   GithubFunctions
   (list-repos [_this login access-token]
     (tentacles.repos/user-repos login
-                                {:all-pages true
+                                {:types :public
+                                 :all-pages true
                                  :oauth-token access-token}))
 
   (create-hook [this user-id repo-name access-token]

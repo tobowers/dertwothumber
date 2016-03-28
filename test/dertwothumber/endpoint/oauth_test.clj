@@ -13,7 +13,7 @@
   (testing "oauth page exists"
     (let [response (handler (mock/request :get "/oauth/github"))]
       (is (= 302 (:status response)))
-      (is (= "https://github.com/login/oauth/authorize?response_type=code&client_id=test-client-id&redirect_uri=http%3A%2F%2Ffake-host%2Foauth%2Fgithub%2Fauthorize&scope=repo%2Cadmin%3Arepo_hook"
+      (is (= "https://github.com/login/oauth/authorize?response_type=code&client_id=test-client-id&redirect_uri=http%3A%2F%2Ffake-host%2Foauth%2Fgithub%2Fauthorize&scope=public_repo%2Cadmin%3Arepo_hook"
              (get (:headers response) "Location")))))
 
   (testing "handling github response"
