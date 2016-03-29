@@ -13,5 +13,6 @@ web:
     - dynamodb
   ports:
     - 3000:3000
+    - 3449:3449
   stdin_open: true
   tty: true
