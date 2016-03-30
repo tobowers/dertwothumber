@@ -49,7 +49,7 @@
          {:http [:app]
           :app  [:oauth :ui :repos-endpoint :webhooks]
           :ui []
-          :webhooks []
+          :webhooks [:repo]
           :repos-endpoint [:repo]
           :oauth []
           :dynamo-db []
