@@ -13,11 +13,10 @@
 
 (defn- handle-pull-request [payload repo-component]
   (let [full-name   (str/split (get-in payload [:pull_request :base :repo :full_name]) #"/")
-        pr-id       (:number payload)
         user-id     (get full-name 0)
         repo-name   (get full-name 1)
         stored-repo (get-repo repo-component (str user-id "/" repo-name))
-        pr          (pull-request {:user-id user-id :repo-name repo-name :pr-id pr-id :access-token (:access-token stored-repo)})
+        pr          (pull-request (assoc payload :access-token (:access-token stored-repo)))
         comments    (get-comments pr)]
     (println "handling a pull request with comments: " comments)))
 
