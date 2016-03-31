@@ -20,7 +20,7 @@
         comments    (get-comments pr)]
     (println "handling a pull request with comments: " comments)))
 
-(defn- is-pull-request [payload]
+(defn- pull-request? [payload]
   (:pull_request payload))
 
 (defn webhooks-endpoint [config]
@@ -29,7 +29,7 @@
       (let [payload (request->payload request)
             repo-component (:repo config)]
         (cond
-          (is-pull-request payload) (handle-pull-request payload repo-component)
+          (pull-request? payload) (handle-pull-request payload repo-component)
           :else (println "not a pull request: " payload))
         (response "OK")))))
 
