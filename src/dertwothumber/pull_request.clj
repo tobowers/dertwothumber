@@ -10,7 +10,8 @@
   (set-state [pull-request state] "set the status of a pull-request "))
 
 (defprotocol AcceptanceFunctions
-  (is-accepted? [pull-request] "if the pull request passes dertwothumber this is true"))
+  (is-accepted? [pull-request] "if the pull request passes dertwothumber this is true")
+  (set-appropriate-state [pull-request] "if PR has a thumb then :success else :pending"))
 
 (defn- comment-has-thumb? [comment]
   (re-find thumbs-up-regex (:body comment)))
@@ -34,7 +35,12 @@
                                   :description "awaiting thumbs"})))
   AcceptanceFunctions
   (is-accepted? [pull-request]
-    (some comment-has-thumb? (get-comments pull-request))))
+    (some comment-has-thumb? (get-comments pull-request)))
+
+  (set-appropriate-state [pull-request]
+    (if (is-accepted? pull-request)
+      (set-state pull-request :success)
+      (set-state pull-request :pending))))
 
 (defn pull-request [opts]
   (map->PullRequest opts))

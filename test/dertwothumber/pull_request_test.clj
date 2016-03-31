@@ -1,6 +1,6 @@
 (ns dertwothumber.pull-request-test
   (:require [clojure.test :refer :all]
-            [dertwothumber.pull-request :refer [pull-request get-comments is-accepted? set-state]]
+            [dertwothumber.pull-request :refer [pull-request set-appropriate-state get-comments is-accepted? set-state]]
             [conjure.core :refer [mocking stubbing verify-call-times-for verify-first-call-args-for]]
             [cheshire.core :refer :all]
             [tentacles.pulls]
@@ -17,7 +17,13 @@
                 (is (not (is-accepted? pr)))))
     (testing "is-accepted? false if not thumb"
       (stubbing [tentacles.issues/issue-comments [{:body ":+1:"}]]
-                (is (is-accepted? pr))))))
+                (is (is-accepted? pr))))
+    (testing "set-appropriate-state"
+      (mocking [dertwothumber.pull-request/set-state]
+               (stubbing [dertwothumber.pull-request/is-accepted? false]
+                         (set-appropriate-state pr)
+                         (verify-call-times-for set-state 1))))))
+
 
 (deftest github-function-tests
   (let [pr (pull-request (assoc test-pr-post :access-token "abc"))]
