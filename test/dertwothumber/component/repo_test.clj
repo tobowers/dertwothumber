@@ -38,6 +38,6 @@
         (verify-first-call-args-for tentacles.repos/create-hook "user-id" "repo-name" "web"
                                                                 {:url "http://localhost/webhooks"}
                                                                 {:active true
-                                                                 :events [:pull_request_review_comment :push :pull_request]
+                                                                 :events [:pull_request_review_comment :issue_comment :push :pull_request]
                                                                  :oauth-token "access-token"}))
       (is (= true (:active (repo/get-repo repo "user-id/repo-name")))))))

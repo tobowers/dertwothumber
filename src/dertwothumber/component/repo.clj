@@ -42,6 +42,7 @@
                                    {:url (:webhooks-url github-config)}
                                    {:active true
                                     :events [:pull_request_review_comment
+                                             :issue_comment
                                              :push
                                              :pull_request]
                                     :oauth-token access-token})
