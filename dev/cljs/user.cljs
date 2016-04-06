@@ -6,6 +6,6 @@
 
 (enable-console-print!)
 
-(figwheel/start {:websocket-url "ws://localhost:3449/figwheel-ws"})
+(figwheel/start {:websocket-url "ws://192.168.99.100:3449/figwheel-ws"})
 
 (core/init!)

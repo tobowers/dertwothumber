@@ -3,7 +3,8 @@
             [clj-http.client :as http]
             [dertwothumber.component.repo :refer [list-repos create-hook]]
             [cheshire.core :refer :all])
-  (:use [ring.middleware.session]))
+  (:use [ring.middleware.session]
+        [ring.util.response]))
 
 (defn repos-endpoint [config]
   (let [repo-component (:repo config)]
@@ -17,4 +18,5 @@
                                 :params} []
            (let [user-id    (:login (:user session))]
              (create-hook repo-component user-id repo-name
-                          (:access-token session)))))))
+                          (:access-token session))
+             (response "ok"))))))

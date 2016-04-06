@@ -4,6 +4,18 @@ FIXME: description
 
 ## Developing
 
+1. Setup a github application
+1. start port forwarding (`bin/ssh-tunnel.sh`)
+1. change ./profiles.clj to have:
+```clj
+
+{:profiles/dev  {:env {:github-client-id "your client-id"
+                       :github-client-secret "your secret"
+                       :app-host "host from port forwarding"}}
+```
+1. modify dev/cljs/user.cljs to point figwheel at your local host (sometimes that local host is your docker host).
+
+
 ### Setup
 
 When you first clone this repository, run:
