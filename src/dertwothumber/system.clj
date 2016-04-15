@@ -19,6 +19,13 @@
             [dertwothumber.component.repo :refer [repo-component]])
   (:use [ring.middleware.session.cookie]))
 
+(defn- deep-merge [a b]
+  (merge-with (fn [x y]
+                (cond (map? y) (deep-merge x y)
+                      (vector? y) (concat x y)
+                      :else y))
+              a b))
+
 (def base-config
   {:app {:middleware [[wrap-not-found :not-found]
                       [wrap-webjars]
@@ -29,14 +36,17 @@
          :defaults   (meta-merge site-defaults {:static  {:resources "dertwothumber/public"}
                                                 :session {:store (cookie-store {:key "a 16-byte sekret"})
                                                           :cookie-attrs {:max-age 3600}}
-                                                :security  {:anti-forgery false}})
-         :aliases    {"/" "/ui"}}
-        :authentication {}})
+                                                :security  {:anti-forgery true}})
+         :aliases    {"/" "/ui"}}})
+
+(def api-config
+  (deep-merge base-config {:app {:defaults {:security {:anti-forgery false}}}}))
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
     (-> (component/system-map
           :app  (handler-component (:app config))
+          :api  (handler-component (:app api-config))
           :http (jetty-server (:http config))
           :oauth (endpoint-component (oauth-endpoint (:github config)))
           :ui (endpoint-component ui-endpoint)
@@ -47,7 +57,8 @@
           :repo (repo-component (:github config)))
         (component/system-using
          {:http [:app]
-          :app  [:oauth :ui :repos-endpoint :webhooks]
+          :app  [:oauth :ui :repos-endpoint]
+          :api  [:webhooks]
           :ui []
           :webhooks [:repo]
           :repos-endpoint [:repo]
