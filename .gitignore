@@ -11,3 +11,4 @@ pom.xml.asc
 dev/local.clj
 /out
 docker-state
+resources/public/js/testable.js
