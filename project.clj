@@ -34,8 +34,7 @@
                  [com.cognitect/transit-cljs "0.8.237"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
-            [lein-cljsbuild "1.1.2"]
-            [lein-doo "0.1.6"]]
+            [lein-cljsbuild "1.1.2"]]
   :generators [[duct/generators "0.5.8"]]
   :duct {:ns-prefix dertwothumber}
   :main ^:skip-aot dertwothumber.main
