@@ -4,6 +4,6 @@ set -e
 
 pushd `dirname $0`/..
 
-bin/docker-command.sh repl
+bin/docker-command.sh test
 
 trap popd EXIT

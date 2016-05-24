@@ -4,6 +4,6 @@ set -e
 
 pushd `dirname $0`/..
 
-bin/docker-command.sh repl
+docker-compose run --rm --service-ports web lein ${@}
 
 trap popd EXIT
