@@ -4,7 +4,7 @@
             [clojure.string]
             [tentacles.core :refer [api-call]]))
 
-(def thumbs-up-regex #"\:\+1\:")
+(def thumbs-up-regex #"(\:\+1\:|👍)") ; character after the | is a github emoji
 
 (defprotocol GithubFunctions
   (get-comments [pull-request] "fetch the comments for a pull-request (for some reason this uses the issue API)")
